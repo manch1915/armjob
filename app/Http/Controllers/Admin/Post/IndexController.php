@@ -3,99 +3,62 @@
 namespace App\Http\Controllers\Admin\Post;
 
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use function view;
 
 class IndexController extends Controller
 {
-    public function index(Tag $tag)
+    public function index(Post $post)
     {
-        $data['tags'] = Tag::orderBy('id','desc');
-        return view('admin.main.tag.index', $data);
+        $posts = $post->all();
+        return view('admin.main.post.index', compact('posts'));
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
-        return view('companies.create');
+        return view('admin.main.post.create');
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required',
-            'address' => 'required'
         ]);
-        $company = new Company;
-        $company->name = $request->name;
-        $company->email = $request->email;
-        $company->address = $request->address;
-        $company->save();
-        return redirect()->route('companies.index')
+        $post = new post();
+        $post->name = $request->name;
+        $post->save();
+        return redirect()->route('posts.index')
             ->with('success','Company has been created successfully.');
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\company  $company
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Company $company)
+
+    public function show(Post $post)
     {
-        return view('companies.show',compact('company'));
+        return view('admin.main.post.show',compact('post'));
     }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Company  $company
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Company $company)
+
+    public function edit(Post $post)
     {
-        return view('companies.edit',compact('company'));
+        return view('admin.main.post.edit',compact('post'));
     }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\company  $company
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required',
-            'address' => 'required',
         ]);
-        $company = Company::find($id);
-        $company->name = $request->name;
-        $company->email = $request->email;
-        $company->address = $request->address;
-        $company->save();
-        return redirect()->route('companies.index')
+        $post = Post::find($id);
+        $post->name = $request->name;
+        $post->save();
+        return redirect()->route('posts.index')
             ->with('success','Company Has Been updated successfully');
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Company  $company
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Company $company)
+
+    public function destroy(Post $post)
     {
-        $company->delete();
-        return redirect()->route('companies.index')
+        $post->delete();
+        return redirect()->route('posts.index')
             ->with('success','Company has been deleted successfully');
     }
 }

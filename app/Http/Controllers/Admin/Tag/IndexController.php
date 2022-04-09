@@ -15,88 +15,50 @@ class IndexController extends Controller
         $tags = $tag->all();
         return view('admin.main.tag.index', compact('tags'));
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
-        return view('companies.create');
+        return view('admin.main.tag.create');
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required',
-            'address' => 'required'
         ]);
-        $company = new Company;
-        $company->name = $request->name;
-        $company->email = $request->email;
-        $company->address = $request->address;
-        $company->save();
-        return redirect()->route('companies.index')
+        $tag = new Tag();
+        $tag->name = $request->name;
+        $tag->save();
+        return redirect()->route('tags.index')
             ->with('success','Company has been created successfully.');
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\company  $company
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Company $company)
+
+    public function show(Tag $tag)
     {
-        return view('companies.show',compact('company'));
+        return view('admin.main.tag.show',compact('tag'));
     }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Company  $company
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Company $company)
+
+    public function edit(Tag $tag)
     {
-        return view('companies.edit',compact('company'));
+        return view('admin.main.tag.edit',compact('tag'));
     }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\company  $company
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required',
-            'address' => 'required',
         ]);
-        $company = Company::find($id);
-        $company->name = $request->name;
-        $company->email = $request->email;
-        $company->address = $request->address;
-        $company->save();
-        return redirect()->route('companies.index')
+        $tag = Tag::find($id);
+        $tag->name = $request->name;
+        $tag->save();
+        return redirect()->route('tags.index')
             ->with('success','Company Has Been updated successfully');
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Company  $company
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Company $company)
+
+    public function destroy(Tag $tag)
     {
-        $company->delete();
-        return redirect()->route('companies.index')
+        $tag->delete();
+        return redirect()->route('tags.index')
             ->with('success','Company has been deleted successfully');
     }
 }

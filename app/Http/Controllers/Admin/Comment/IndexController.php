@@ -86,12 +86,7 @@ class IndexController extends Controller
         return redirect()->route('companies.index')
             ->with('success','Company Has Been updated successfully');
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Company  $company
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(Company $company)
     {
         $company->delete();

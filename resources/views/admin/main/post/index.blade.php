@@ -14,38 +14,26 @@
     </div>
     <!-- /.content-header -->
     <div class="pull-right mb-2 pl-3">
-        <a class="btn btn-success" href="{{ route('tags.create') }}"> Create tag</a>
+        <a class="btn btn-success" href="{{ route('posts.create') }}"> Add post</a>
     </div>
     <!-- /.card-header -->
-    <div class="card-body">
-        <table id="example2" class="table table-bordered table-hover">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($tags as $tag)
-                <tr>
-                    <td>{{$tag->id}}</td>
-                    <td>{{$tag->name}}</td>
-                    <td>
-                        <form action="{{ route('tags.destroy',$tag->id) }}" method="Post">
-                            <a class="btn btn-primary" href="{{ route('tags.edit',$tag->id) }}">Edit</a>
+            @foreach($posts as $post)
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{$post->title}}</h5>
+                        <p class="card-text">{{$post->created_at}}</p>
+                        <form action="{{ route('posts.destroy',$post->id) }}" method="Post">
+                            <a class="btn btn-primary" href="{{ route('posts.edit',$post->id) }}">Edit</a>
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
-                    </td>
-                </tr>
+                    </div>
+                </div>
             @endforeach
-            </tbody>
-        </table>
     </div>
     <!-- /.card-body -->
-</div>
 <!-- /.content-wrapper -->
 
 @endsection
