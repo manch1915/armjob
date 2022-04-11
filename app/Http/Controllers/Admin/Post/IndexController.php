@@ -24,10 +24,18 @@ class IndexController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'title' => 'required',
+            'body' => 'required',
         ]);
+        //get first image from body
+        $image = $request->body;
+        preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $image, $image);
+        $image = $image['src'];
+
         $post = new post();
-        $post->name = $request->name;
+        $post->title = $request->title;
+        $post->body = $request->body;
+        $post->general_image = $image;
         $post->save();
         return redirect()->route('posts.index')
             ->with('success','Company has been created successfully.');
@@ -46,10 +54,17 @@ class IndexController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required',
+            'title' => 'required',
+            'body' => 'required',
         ]);
+        $image = $request->body;
+        preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $image, $image);
+        $image = $image['src'];
+
         $post = Post::find($id);
         $post->name = $request->name;
+        $post->body = $request->body;
+        $post->general_image = $image;
         $post->save();
         return redirect()->route('posts.index')
             ->with('success','Company Has Been updated successfully');
