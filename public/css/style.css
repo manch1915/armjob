@@ -1,0 +1,19 @@
+footer{
+    background-color: #202020;
+    color: var(--bs-white);
+}
+.categories ul li{
+    list-style-type: '#';
+    margin-right: 10px;
+}
+.categories ul li a{
+    text-decoration: none;
+    color: var(--bs-white);
+    font-size: 16px;
+    transition: 0.3s;
+}
+.categories ul li a:hover{
+    text-decoration: underline;
+    color: var(--bs-red);
+    margin-left: 10px;
+}

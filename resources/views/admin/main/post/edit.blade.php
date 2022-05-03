@@ -20,9 +20,9 @@
         @method('PUT')
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
+                <div class="form-group w-50">
                     <strong>Post title:</strong>
-                    <input type="text" value="{{ $post->title }}" name="title" class="form-control" placeholder="Tag Name">
+                    <input type="text" value="{{ $post->title }}" name="title" class="form-control " placeholder="Tag Name">
                     @error('name')
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                     @enderror
@@ -33,8 +33,12 @@
                         {{ $post->body }}
                     </textarea>
                 </div>
+                <div class="form-group">
+                    <strong>Breaking</strong>
+                    <input type="checkbox" name="breaking" value="1" {{ $post->breaking ? 'checked' : '' }}>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary ml-3">Submit</button>
+            <button type="submit" class="btn btn-primary ml-3 w-25">Submit</button>
         </div>
     </form>
     <!-- /.card-body -->

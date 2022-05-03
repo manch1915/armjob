@@ -36,6 +36,7 @@ class IndexController extends Controller
         $post->title = $request->title;
         $post->body = $request->body;
         $post->general_image = $image;
+        $post->breaking = $request->breaking;
         $post->save();
         return redirect()->route('posts.index')
             ->with('success','Company has been created successfully.');
@@ -59,15 +60,34 @@ class IndexController extends Controller
         ]);
         $image = $request->body;
         preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $image, $image);
-        $image = $image['src'];
+        if(isset($image['src'])){
+            $image = $image['src'];
+        }else{
+            $image = 'none';
+        }
+
+        if($request->breaking == null){
+            $request->breaking = 0;
+        }
 
         $post = Post::find($id);
-        $post->name = $request->name;
+        $post->title = $request->title;
         $post->body = $request->body;
         $post->general_image = $image;
+        $post->breaking = $request->breaking;
         $post->save();
         return redirect()->route('posts.index')
             ->with('success','Company Has Been updated successfully');
+    }
+
+    public function upload(Request $request){
+        $image = $request->file('file');
+        $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
+        $destinationPath = public_path('/images');
+        $image->move($destinationPath, $input['imagename']);
+        $url = asset('images/'.$input['imagename']);
+        $data = array('location'=>$url);
+        return response()->json($data);
     }
 
     public function destroy(Post $post)
