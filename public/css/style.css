@@ -17,3 +17,8 @@ footer{
     color: var(--bs-red);
     margin-left: 10px;
 }
+
+.recent_posts img {
+    width: 100%;
+    height: auto;
+}

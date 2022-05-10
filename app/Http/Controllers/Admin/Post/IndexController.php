@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Post;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use function view;
@@ -18,7 +19,8 @@ class IndexController extends Controller
 
     public function create()
     {
-        return view('admin.main.post.create');
+        $tags = Tag::all();
+        return view('admin.main.post.create', compact('tags'));
     }
 
     public function store(Request $request)
@@ -27,16 +29,26 @@ class IndexController extends Controller
             'title' => 'required',
             'body' => 'required',
         ]);
-        //get first image from body
         $image = $request->body;
         preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $image, $image);
-        $image = $image['src'];
+        if (isset($image['src'])) {
+            $image = $image['src'];
+        } else {
+            $image = 'null';
+        }
+
+
+        $tags = $request->tags;
+        $tags = array_unique(explode(' ', $tags));
+        $tags = implode(' ', $tags);
 
         $post = new post();
         $post->title = $request->title;
         $post->body = $request->body;
         $post->general_image = $image;
         $post->breaking = $request->breaking;
+        $post->tags = $tags;
+
         $post->save();
         return redirect()->route('posts.index')
             ->with('success','Company has been created successfully.');
@@ -49,7 +61,8 @@ class IndexController extends Controller
 
     public function edit(Post $post)
     {
-        return view('admin.main.post.edit',compact('post'));
+        $tags = Tag::all();
+        return view('admin.main.post.edit', compact('post','tags'));
     }
 
     public function update(Request $request, $id)
@@ -70,11 +83,17 @@ class IndexController extends Controller
             $request->breaking = 0;
         }
 
+        $tags = $request->tags;
+        $tags = substr($tags, 0, -1);
+        $tags = array_unique(explode(' ', $tags));
+        $tags = implode(' ', $tags);
+
         $post = Post::find($id);
         $post->title = $request->title;
         $post->body = $request->body;
         $post->general_image = $image;
         $post->breaking = $request->breaking;
+        $post->tags = $tags;
         $post->save();
         return redirect()->route('posts.index')
             ->with('success','Company Has Been updated successfully');

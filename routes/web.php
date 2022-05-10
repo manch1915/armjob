@@ -7,7 +7,7 @@ use App\Http\Controllers\Admin\Tag\IndexController as TagIndexController;
 use App\Http\Controllers\Main\IndexController as MainIndexController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth','admin']], function () {
         Route::get('/', [IndexController::class, 'index'])->name('admin.main');
         Route::post('/', [IndexController::class, 'imgBase64'])->name('admin.base');
         Route::resource('tags', TagIndexController::class);
@@ -17,3 +17,4 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 Route::get('/', [MainIndexController::class, 'index'])->name('main');
+Route::get('/{year}/{month}/{slug}.html', [MainIndexController::class, 'post'])->name('post');

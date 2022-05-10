@@ -23,6 +23,14 @@
                 <input type="checkbox" name="breaking" value="1">
                 Breaking
             </label>
+            <input type="text" value="" name="tags" placeholder="Select some tags" id="tag_input" readonly>
+            <select name="" id="tags">
+                @foreach($tags as $tag)
+                    <option value="{{ $tag->name }}">{{ $tag->name }}</option>
+                @endforeach
+            </select>
+            <button type="button" class="btn btn-primary ml-3" id="add_tag">Add tag</button>
+            <button type="button" class="btn btn-primary ml-3" id="clear_tag">Clear tags</button>
             <button type="submit" class="btn btn-primary ml-3">Submit</button>
         </form>
         <!-- /.card-body -->
@@ -120,7 +128,6 @@
                 }
             ]
         });
-
     </script>
 @endsection
 
